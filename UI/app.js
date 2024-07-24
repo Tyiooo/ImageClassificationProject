@@ -30,7 +30,7 @@ function init() {
                 $("#error").show();
                 return;
             }
-            let players = ["anne_hathaway", "brad_pitt", "elon_musk", "jeff_bezos", "mark_zuckerberg"];
+            let persons = ["anne_hathaway", "brad_pitt", "elon_musk", "jeff_bezos", "mark_zuckerberg"];
 
             let match = null;
             let bestScore = -1;
@@ -45,7 +45,7 @@ function init() {
                 $("#error").hide();
                 $("#resultHolder").show();
                 $("#divClassTable").show();
-                $("#resultHolder").html($(`[data-player="${match.class}"`).html());
+                $("#resultHolder").html($(`[data-person="${match.class}"`).html());
                 let classDictionary = match.class_dictionary;
                 for(let personName in classDictionary) {
                     let index = classDictionary[personName];
