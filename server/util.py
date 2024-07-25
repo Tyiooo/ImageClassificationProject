@@ -40,13 +40,13 @@ def load_saved_artifacts():
     global __class_name_to_number
     global __class_number_to_name
 
-    with open("./artifacts/class_dictionary.json", "r") as f:
+    with open("D:/MyProjectsPY/ImageClassificationProject/server/artifacts/class_dictionary.json", "r") as f:
         __class_name_to_number = json.load(f)
         __class_number_to_name = {v:k for k,v in __class_name_to_number.items()}
 
     global __model
     if __model is None:
-        with open('./artifacts/saved_model.pkl', 'rb') as f:
+        with open('D:/MyProjectsPY/ImageClassificationProject/server/artifacts/saved_model.pkl', 'rb') as f:
             __model = joblib.load(f)
     print("loading saved artifacts...done")
 
@@ -58,8 +58,8 @@ def get_cv2_image_from_base64_string(b64str):
     return img
 
 def get_cropped_image_if_2_eyes(image_path, image_base64_data):
-    face_cascade = cv2.CascadeClassifier('./opencv/haarcascades/haarcascade_frontalface_default.xml')
-    eye_cascade = cv2.CascadeClassifier('./opencv/haarcascades/haarcascade_eye.xml')
+    face_cascade = cv2.CascadeClassifier('D:/MyProjectsPY/ImageClassificationProject/server/opencv/haarcascades/haarcascade_frontalface_default.xml')
+    eye_cascade = cv2.CascadeClassifier('D:/MyProjectsPY/ImageClassificationProject/server/opencv/haarcascades/haarcascade_eye.xml')
 
     if image_path:
         img = cv2.imread(image_path)
@@ -77,21 +77,3 @@ def get_cropped_image_if_2_eyes(image_path, image_base64_data):
             if len(eyes) >= 2:
                 cropped_faces.append(roi_color)
     return cropped_faces
-
-def get_b64_test_image_for_virat():
-    with open("b64.txt") as f:
-        return f.read()
-
-if __name__ == '__main__':
-    load_saved_artifacts()
-
-    print(classify_image(get_b64_test_image_for_virat(), None))
-    print(classify_image(None, "D:/MyProjectsPY/ImageClassificationProject/model/test_images/hathaway1.jpg"))
-    print(classify_image(None, "D:/MyProjectsPY/ImageClassificationProject/model/test_images/hathaway2.jpg"))
-    print(classify_image(None, "D:/MyProjectsPY/ImageClassificationProject/model/test_images/pitt1.jpg"))
-    print(classify_image(None, "D:/MyProjectsPY/ImageClassificationProject/model/test_images/pitt2.jpg"))
-    print(classify_image(None, "D:/MyProjectsPY/ImageClassificationProject/model/test_images/musk2.jpg")) # Inconsistent result could be due to https://github.com/scikit-learn/scikit-learn/issues/13211
-    print(classify_image(None, "D:/MyProjectsPY/ImageClassificationProject/model/test_images/bezos1.jpg"))
-    print(classify_image(None, "D:/MyProjectsPY/ImageClassificationProject/model/test_images/zuckerberg1.jpg"))
-    print(classify_image(None, "D:/MyProjectsPY/ImageClassificationProject/model/test_images/zuckerberg2.jpg"))
-

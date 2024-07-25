@@ -10,7 +10,7 @@ function init() {
     });
 
     dz.on("addedfile", function() {
-        if (dz.files[1]!=null) {
+        if (dz.files[1] != null) {
             dz.removeFile(dz.files[0]);
         }
     });
@@ -22,21 +22,22 @@ function init() {
 
         $.post(url, {
             image_data: imageData
-        },function(data, status) {
+        }, function(data, status) {
             console.log(data);
-            if (!data || data.length==0) {
+            if (!data || data.length == 0) {
                 $("#resultHolder").hide();
                 $("#divClassTable").hide();
                 $("#error").show();
                 return;
             }
+
             let persons = ["anne_hathaway", "brad_pitt", "elon_musk", "jeff_bezos", "mark_zuckerberg"];
 
             let match = null;
             let bestScore = -1;
-            for (let i=0;i<data.length;++i) {
+            for (let i = 0; i < data.length; ++i) {
                 let maxScoreForThisClass = Math.max(...data[i].class_probability);
-                if(maxScoreForThisClass>bestScore) {
+                if (maxScoreForThisClass > bestScore) {
                     match = data[i];
                     bestScore = maxScoreForThisClass;
                 }
@@ -47,14 +48,24 @@ function init() {
                 $("#divClassTable").show();
                 $("#resultHolder").html($(`[data-person="${match.class}"`).html());
                 let classDictionary = match.class_dictionary;
-                for(let personName in classDictionary) {
+                let maxScore = -1;
+                let maxPerson = null;
+                for (let personName in classDictionary) {
                     let index = classDictionary[personName];
-                    let proabilityScore = match.class_probability[index];
+                    let probabilityScore = match.class_probability[index];
                     let elementName = "#score_" + personName;
-                    $(elementName).html(proabilityScore);
+                    $(elementName).html(probabilityScore);
+                    if (probabilityScore > maxScore) {
+                        maxScore = probabilityScore;
+                        maxPerson = personName;
+                    }
+                }
+                $("tr").removeClass("highlight");
+
+                if (maxPerson) {
+                    $("#score_" + maxPerson).closest("tr").addClass("highlight");
                 }
             }
-            // dz.removeFile(file);
         });
     });
 
@@ -64,7 +75,7 @@ function init() {
 }
 
 $(document).ready(function() {
-    console.log( "ready!" );
+    console.log("ready!");
     $("#error").hide();
     $("#resultHolder").hide();
     $("#divClassTable").hide();

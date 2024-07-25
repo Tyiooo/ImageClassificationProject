@@ -17,4 +17,4 @@ def classify_image():
 if __name__ == "__main__":
     print('Starting Python Flask Server For Famous Persons Image Classification')
     util.load_saved_artifacts()
-    app.run(port=5500)
+    app.run(port=5000)
